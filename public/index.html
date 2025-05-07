@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Auth</title>
+</head>
+<body>
+  <h1>Register</h1>
+  <form id="registerForm">
+    <input type="text" placeholder="Name" name="name" required />
+    <input type="email" placeholder="Email" name="email" required />
+    <input type="password" placeholder="Password" name="password" required />
+    <input type="number" placeholder="Age" name="age" />
+    <textarea placeholder="Bio" name="bio"></textarea>
+    <button type="submit">Register</button>
+  </form>
+
+  <h1>Login</h1>
+  <form id="loginForm">
+    <input type="email" placeholder="Email" name="email" required />
+    <input type="password" placeholder="Password" name="password" required />
+    <button type="submit">Login</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const responseBox = document.getElementById('response');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(registerForm);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      responseBox.innerText = JSON.stringify(result, null, 2);
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(loginForm);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      responseBox.innerText = JSON.stringify(result, null, 2);
+    });
+  </script>
+</body>
+</html>
